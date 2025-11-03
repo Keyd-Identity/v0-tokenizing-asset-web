@@ -5,44 +5,66 @@ import { ProjectCard } from "@/components/project-card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import { useStore } from "@/lib/store"
 import { categories } from "@/lib/mock-data"
 import { Search, SlidersHorizontal } from "lucide-react"
+import { isFeaturedActive } from "@/lib/helpers"
+import { useSearchParams } from "next/navigation"
 
 export default function MarketplacePage() {
   const { projects } = useStore()
+  const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [priceRange, setPriceRange] = useState({ min: "", max: "" })
   const [showFilters, setShowFilters] = useState(false)
+  const [showOnlyFeatured, setShowOnlyFeatured] = useState(searchParams.get("featured") === "true")
 
   const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
-      // Category filter
-      if (selectedCategory !== "All" && project.category !== selectedCategory) {
-        return false
-      }
+    return projects
+      .filter((project) => {
+        if (project.status !== "approved") {
+          return false
+        }
 
-      // Search filter
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase()
-        const matchesSearch =
-          project.name.toLowerCase().includes(query) ||
-          project.location.toLowerCase().includes(query) ||
-          project.category.toLowerCase().includes(query)
-        if (!matchesSearch) return false
-      }
+        if (showOnlyFeatured && !isFeaturedActive(project)) {
+          return false
+        }
 
-      // Price range filter
-      const minPrice = priceRange.min ? Number.parseFloat(priceRange.min) : 0
-      const maxPrice = priceRange.max ? Number.parseFloat(priceRange.max) : Number.POSITIVE_INFINITY
-      if (project.pricePerTokenUSDT < minPrice || project.pricePerTokenUSDT > maxPrice) {
-        return false
-      }
+        // Category filter
+        if (selectedCategory !== "All" && project.category !== selectedCategory) {
+          return false
+        }
 
-      return true
-    })
-  }, [projects, selectedCategory, searchQuery, priceRange])
+        // Search filter
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase()
+          const matchesSearch =
+            project.name.toLowerCase().includes(query) ||
+            project.location.toLowerCase().includes(query) ||
+            project.category.toLowerCase().includes(query)
+          if (!matchesSearch) return false
+        }
+
+        // Price range filter
+        const minPrice = priceRange.min ? Number.parseFloat(priceRange.min) : 0
+        const maxPrice = priceRange.max ? Number.parseFloat(priceRange.max) : Number.POSITIVE_INFINITY
+        if (project.pricePerTokenUSDT < minPrice || project.pricePerTokenUSDT > maxPrice) {
+          return false
+        }
+
+        return true
+      })
+      .sort((a, b) => {
+        const aFeatured = isFeaturedActive(a)
+        const bFeatured = isFeaturedActive(b)
+        if (aFeatured && !bFeatured) return -1
+        if (!aFeatured && bFeatured) return 1
+        if (aFeatured && bFeatured) return b.featuredScore - a.featuredScore
+        return b.salesUSDT - a.salesUSDT // Sort by sales for non-featured
+      })
+  }, [projects, selectedCategory, searchQuery, priceRange, showOnlyFeatured])
 
   return (
     <div className="min-h-screen">
@@ -73,6 +95,18 @@ export default function MarketplacePage() {
         <div className="flex flex-col gap-8 lg:flex-row">
           {/* Filters Sidebar */}
           <aside className={`w-full space-y-6 lg:w-64 lg:block ${showFilters ? "block" : "hidden lg:block"}`}>
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="featured-toggle" className="cursor-pointer font-semibold">
+                  Solo destacados
+                </Label>
+                <Switch id="featured-toggle" checked={showOnlyFeatured} onCheckedChange={setShowOnlyFeatured} />
+              </div>
+              {showOnlyFeatured && filteredProjects.length === 0 && (
+                <p className="mt-2 text-xs text-muted-foreground">Aún no hay proyectos destacados</p>
+              )}
+            </div>
+
             <div className="rounded-2xl border border-border bg-card p-5">
               <h3 className="mb-4 font-semibold">Categorías</h3>
               <div className="space-y-2">
@@ -138,7 +172,7 @@ export default function MarketplacePage() {
             <div className="mb-4 flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
                 {filteredProjects.length} {filteredProjects.length === 1 ? "proyecto" : "proyectos"}{" "}
-                {filteredProjects.length !== projects.length && "encontrados"}
+                {filteredProjects.length !== projects.filter((p) => p.status === "approved").length && "encontrados"}
               </p>
             </div>
             {filteredProjects.length > 0 ? (

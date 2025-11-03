@@ -1,8 +1,21 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Shield, TrendingUp, Lock } from "lucide-react"
+import { useStore } from "@/lib/store"
+import { FeaturedCarousel } from "@/components/featured-carousel"
+import { getFeaturedProjects } from "@/lib/helpers"
+import { useMemo } from "react"
 
 export default function HomePage() {
+  const { user, projects } = useStore()
+
+  const featuredProjects = useMemo(() => {
+    const featured = getFeaturedProjects(projects)
+    return featured.slice(0, 8) // Max 8 featured projects
+  }, [projects])
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* Hero Section */}
@@ -22,13 +35,51 @@ export default function HomePage() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/marketplace">Explorar Proyectos</Link>
-              </Button>
+              {!user.role ? (
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/auth/login">Iniciar Sesión</Link>
+                </Button>
+              ) : (
+                <Button size="lg" variant="outline" asChild>
+                  <Link
+                    href={
+                      user.role === "admin"
+                        ? "/panels/admin"
+                        : user.role === "investor"
+                          ? "/panels/investor"
+                          : "/panels/promoter"
+                    }
+                  >
+                    Mi Panel
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </section>
+
+      {featuredProjects.length > 0 && (
+        <section className="border-b border-border py-16 md:py-20">
+          <div className="container mx-auto px-4">
+            <div className="mb-8 flex items-center justify-between">
+              <div>
+                <h2 className="text-3xl font-bold md:text-4xl">Proyectos Destacados</h2>
+                <p className="mt-2 text-muted-foreground">Seleccionados por el equipo según demanda y liquidez</p>
+              </div>
+              {featuredProjects.length > 8 && (
+                <Button variant="ghost" asChild className="hidden md:flex">
+                  <Link href="/marketplace?featured=true">
+                    Ver todos
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              )}
+            </div>
+            <FeaturedCarousel projects={featuredProjects} />
+          </div>
+        </section>
+      )}
 
       {/* Features Section */}
       <section className="border-b border-border py-20">

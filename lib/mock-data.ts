@@ -1,4 +1,4 @@
-import type { Project, User } from "./types"
+import type { Project, User, Order, KycRecord, MarketplaceFees, Payout, AuditLog, PromoterBalance } from "./types"
 
 export const mockProjects: Project[] = [
   {
@@ -21,6 +21,14 @@ export const mockProjects: Project[] = [
       { id: "2", name: "Valuación Independiente", type: "PDF", url: "#" },
       { id: "3", name: "Términos y Condiciones", type: "PDF", url: "#" },
     ],
+    status: "approved",
+    ownerPromoterId: "promoter-1",
+    salesUSDT: 250000,
+    buyersCount: 25,
+    featured: true,
+    featuredScore: 95,
+    featuredTag: "Top",
+    highlightUntil: "2025-12-31T23:59:59Z",
   },
   {
     id: "2",
@@ -42,6 +50,14 @@ export const mockProjects: Project[] = [
       { id: "2", name: "Contratos PPA", type: "PDF", url: "#" },
       { id: "3", name: "Proyección Financiera", type: "PDF", url: "#" },
     ],
+    status: "approved",
+    ownerPromoterId: "promoter-2",
+    salesUSDT: 250000,
+    buyersCount: 50,
+    featured: true,
+    featuredScore: 90,
+    featuredTag: "Alta demanda",
+    highlightUntil: "2025-12-31T23:59:59Z",
   },
   {
     id: "3",
@@ -63,6 +79,13 @@ export const mockProjects: Project[] = [
       { id: "2", name: "Estudio de Mercado", type: "PDF", url: "#" },
       { id: "3", name: "Licencias y Permisos", type: "PDF", url: "#" },
     ],
+    status: "approved",
+    ownerPromoterId: "promoter-1",
+    salesUSDT: 360000,
+    buyersCount: 18,
+    featured: true,
+    featuredScore: 85,
+    featuredTag: "Nuevo",
   },
   {
     id: "4",
@@ -84,6 +107,12 @@ export const mockProjects: Project[] = [
       { id: "2", name: "Certificaciones", type: "PDF", url: "#" },
       { id: "3", name: "Análisis de Rentabilidad", type: "PDF", url: "#" },
     ],
+    status: "pending",
+    ownerPromoterId: "promoter-2",
+    salesUSDT: 0,
+    buyersCount: 0,
+    featured: false,
+    featuredScore: 0,
   },
   {
     id: "5",
@@ -105,6 +134,14 @@ export const mockProjects: Project[] = [
       { id: "2", name: "Historial de Producción", type: "PDF", url: "#" },
       { id: "3", name: "Contratos de Distribución", type: "PDF", url: "#" },
     ],
+    status: "approved",
+    ownerPromoterId: "promoter-3",
+    salesUSDT: 240000,
+    buyersCount: 16,
+    featured: true,
+    featuredScore: 80,
+    featuredTag: "Limitado",
+    highlightUntil: "2025-06-30T23:59:59Z",
   },
   {
     id: "6",
@@ -126,13 +163,207 @@ export const mockProjects: Project[] = [
       { id: "2", name: "Certificación Energética", type: "PDF", url: "#" },
       { id: "3", name: "Valoración Inmobiliaria", type: "PDF", url: "#" },
     ],
+    status: "draft",
+    ownerPromoterId: "promoter-3",
+    salesUSDT: 0,
+    buyersCount: 0,
+    featured: false,
+    featuredScore: 0,
   },
 ]
 
 export const mockUser: User = {
+  id: "user-1",
   walletAddress: null,
   kycVerified: false,
   purchases: [],
+  role: null, // Can be changed to "admin", "investor", or "promoter" for testing
 }
 
 export const categories = ["All", "Real Estate", "Energy", "Hospitality", "Logistics", "Agriculture"]
+
+export const mockOrders: Order[] = [
+  {
+    id: "order-1",
+    projectId: "1",
+    projectName: "Torre Residencial Madrid Centro",
+    investorId: "investor-1",
+    investorWallet: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+    quantity: 50,
+    pricePerToken: 100,
+    total: 5000,
+    createdAt: "2025-01-15T10:30:00Z",
+    status: "success",
+  },
+  {
+    id: "order-2",
+    projectId: "2",
+    projectName: "Parque Solar Andalucía",
+    investorId: "investor-2",
+    investorWallet: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+    quantity: 100,
+    pricePerToken: 50,
+    total: 5000,
+    createdAt: "2025-01-14T14:20:00Z",
+    status: "success",
+  },
+  {
+    id: "order-3",
+    projectId: "3",
+    projectName: "Hotel Boutique Barcelona",
+    investorId: "investor-1",
+    investorWallet: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+    quantity: 25,
+    pricePerToken: 200,
+    total: 5000,
+    createdAt: "2025-01-13T09:15:00Z",
+    status: "success",
+  },
+]
+
+export const mockKycRecords: KycRecord[] = [
+  {
+    userId: "investor-1",
+    userName: "Juan Pérez",
+    role: "investor",
+    status: "verified",
+    submittedAt: "2025-01-01T10:00:00Z",
+  },
+  {
+    userId: "investor-2",
+    userName: "María García",
+    role: "investor",
+    status: "pending",
+    submittedAt: "2025-01-10T15:30:00Z",
+  },
+  {
+    userId: "promoter-1",
+    userName: "Inversiones Madrid SL",
+    role: "promoter",
+    status: "verified",
+    submittedAt: "2024-12-15T12:00:00Z",
+  },
+  {
+    userId: "promoter-2",
+    userName: "Green Energy Partners",
+    role: "promoter",
+    status: "verified",
+    submittedAt: "2024-12-20T09:00:00Z",
+  },
+  {
+    userId: "promoter-3",
+    userName: "Rioja Investments",
+    role: "promoter",
+    status: "pending",
+    submittedAt: "2025-01-05T11:00:00Z",
+  },
+]
+
+export const mockMarketplaceFees: MarketplaceFees = {
+  bps: 250, // 2.5%
+  accruedUSDT: 28500,
+}
+
+export const mockPayouts: Payout[] = [
+  {
+    id: "payout-1",
+    investorId: "investor-1",
+    projectId: "1",
+    projectName: "Torre Residencial Madrid Centro",
+    amount: 425,
+    date: "2025-01-01T00:00:00Z",
+    status: "paid",
+  },
+  {
+    id: "payout-2",
+    investorId: "investor-1",
+    projectId: "3",
+    projectName: "Hotel Boutique Barcelona",
+    amount: 270,
+    date: "2025-01-01T00:00:00Z",
+    status: "paid",
+  },
+]
+
+export const mockAuditLogs: AuditLog[] = [
+  {
+    id: "log-1",
+    action: "Proyecto aprobado",
+    by: "Admin Principal",
+    byRole: "admin",
+    date: "2025-01-10T10:00:00Z",
+    refId: "1",
+    details: "Torre Residencial Madrid Centro",
+  },
+  {
+    id: "log-2",
+    action: "Proyecto creado",
+    by: "Inversiones Madrid SL",
+    byRole: "promoter",
+    date: "2025-01-05T14:30:00Z",
+    refId: "6",
+    details: "Edificio Oficinas Tech Hub",
+  },
+  {
+    id: "log-3",
+    action: "Fee actualizado",
+    by: "Admin Principal",
+    byRole: "admin",
+    date: "2025-01-03T09:00:00Z",
+    details: "Fee cambiado de 200 bps a 250 bps",
+  },
+]
+
+export const mockPromoterBalances: PromoterBalance[] = [
+  {
+    promoterId: "promoter-1",
+    availableUSDT: 595000,
+    pendingUSDT: 15000,
+  },
+  {
+    promoterId: "promoter-2",
+    availableUSDT: 242500,
+    pendingUSDT: 7500,
+  },
+  {
+    promoterId: "promoter-3",
+    availableUSDT: 234000,
+    pendingUSDT: 6000,
+  },
+]
+
+export const mockInvestorHoldings = [
+  {
+    projectId: "1",
+    projectName: "Torre Residencial Madrid Centro",
+    category: "Real Estate",
+    tokensOwned: 50,
+    avgCost: 100,
+    currentPrice: 100,
+    totalValue: 5000,
+    pnl: 0,
+    pnlPercent: 0,
+  },
+  {
+    projectId: "3",
+    projectName: "Hotel Boutique Barcelona",
+    category: "Hospitality",
+    tokensOwned: 25,
+    avgCost: 200,
+    currentPrice: 200,
+    totalValue: 5000,
+    pnl: 0,
+    pnlPercent: 0,
+  },
+  {
+    projectId: "2",
+    projectName: "Parque Solar Andalucía",
+    category: "Energy",
+    tokensOwned: 100,
+    avgCost: 48,
+    currentPrice: 50,
+    totalValue: 5000,
+    pnl: 200,
+    pnlPercent: 4.17,
+  },
+]
