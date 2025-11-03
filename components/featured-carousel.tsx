@@ -40,7 +40,7 @@ export function FeaturedCarousel({ projects }: FeaturedCarouselProps) {
   return (
     <div className="relative">
       <div className="overflow-hidden rounded-2xl border border-border bg-card">
-        <div className="relative aspect-[16/9] md:aspect-[21/9]">
+        <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9]">
           <Image
             src={currentProject.image || "/placeholder.svg"}
             alt={currentProject.name}
@@ -51,8 +51,8 @@ export function FeaturedCarousel({ projects }: FeaturedCarouselProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
-          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 lg:p-12">
-            <div className="mb-4 flex flex-wrap gap-2">
+          <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 lg:p-12">
+            <div className="mb-3 flex flex-wrap gap-2 sm:mb-4">
               <Badge variant="secondary" className="bg-primary/20 text-primary">
                 Destacado
               </Badge>
@@ -64,9 +64,11 @@ export function FeaturedCarousel({ projects }: FeaturedCarouselProps) {
               <Badge variant="outline">{currentProject.category}</Badge>
             </div>
 
-            <h2 className="mb-2 text-balance text-2xl font-bold md:text-4xl lg:text-5xl">{currentProject.name}</h2>
+            <h2 className="mb-2 text-balance text-xl font-bold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+              {currentProject.name}
+            </h2>
 
-            <div className="mb-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground md:text-base">
+            <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground sm:mb-4 sm:gap-4 sm:text-sm md:text-base">
               <div className="flex items-center gap-1">
                 <MapPin className="h-4 w-4" />
                 {currentProject.location}
@@ -86,11 +88,17 @@ export function FeaturedCarousel({ projects }: FeaturedCarouselProps) {
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" asChild onClick={handleViewClick}>
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
+              <Button size="lg" asChild onClick={handleViewClick} className="w-full sm:w-auto">
                 <Link href={`/project/${currentProject.id}`}>Ver proyecto</Link>
               </Button>
-              <Button size="lg" variant="outline" asChild onClick={handleBuyClick}>
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                onClick={handleBuyClick}
+                className="w-full sm:w-auto bg-transparent"
+              >
                 <Link href={`/project/${currentProject.id}/buy`}>Comprar tokens</Link>
               </Button>
             </div>
@@ -104,24 +112,24 @@ export function FeaturedCarousel({ projects }: FeaturedCarouselProps) {
           <Button
             variant="outline"
             size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur-sm"
+            className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur-sm sm:left-4"
             onClick={goToPrevious}
             aria-label="Proyecto anterior"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           <Button
             variant="outline"
             size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur-sm"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur-sm sm:right-4"
             onClick={goToNext}
             aria-label="Siguiente proyecto"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
 
           {/* Dots Indicator */}
-          <div className="mt-4 flex justify-center gap-2">
+          <div className="mt-3 flex justify-center gap-2 sm:mt-4">
             {projects.map((_, index) => (
               <button
                 key={index}

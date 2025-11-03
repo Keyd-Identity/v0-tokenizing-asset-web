@@ -25,7 +25,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         isFeatured ? "border-primary/50 shadow-md shadow-primary/10" : "border-border hover:border-primary/50"
       }`}
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden sm:aspect-[16/10]">
         <Image
           src={project.image || "/placeholder.svg"}
           alt={project.name}
@@ -61,23 +61,23 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </div>
         )}
       </div>
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <div className="mb-3 flex items-start justify-between gap-2">
-          <h3 className="text-balance text-lg font-semibold leading-tight">{project.name}</h3>
+          <h3 className="text-balance text-base font-semibold leading-tight sm:text-lg">{project.name}</h3>
         </div>
         <div className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground">
           <MapPin className="h-4 w-4" />
-          <span>{project.location}</span>
+          <span className="truncate">{project.location}</span>
         </div>
         <div className="mb-4 grid grid-cols-2 gap-3">
           <div>
             <p className="text-xs text-muted-foreground">Precio por Token</p>
-            <p className="text-lg font-semibold">${project.pricePerTokenUSDT} USDT</p>
+            <p className="text-base font-semibold sm:text-lg">${project.pricePerTokenUSDT} USDT</p>
           </div>
           {project.apyEstimated && (
             <div>
               <p className="text-xs text-muted-foreground">APY Estimado</p>
-              <p className="flex items-center gap-1 text-lg font-semibold text-success">
+              <p className="flex items-center gap-1 text-base font-semibold text-success sm:text-lg">
                 <TrendingUp className="h-4 w-4" />
                 {project.apyEstimated}%
               </p>
@@ -98,12 +98,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
             />
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button className="flex-1" asChild>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button className="flex-1 w-full" asChild>
             <Link href={`/project/${project.id}`}>Ver Proyecto</Link>
           </Button>
           {isPromoterOwner && (
-            <Button variant="outline" size="icon" asChild>
+            <Button variant="outline" size="icon" asChild className="w-full sm:w-auto bg-transparent">
               <Link href="/panels/promoter">
                 <Settings className="h-4 w-4" />
               </Link>

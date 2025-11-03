@@ -22,33 +22,34 @@ export default async function BuyPage({ params }: BuyPageProps) {
     <div className="min-h-screen">
       {/* Header */}
       <div className="border-b border-border bg-card">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
           <Button variant="ghost" size="sm" asChild>
             <Link href={`/project/${project.id}`}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver al Proyecto
+              <span className="hidden sm:inline">Volver al Proyecto</span>
+              <span className="sm:hidden">Volver</span>
             </Link>
           </Button>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold">Comprar Tokens</h1>
-          <p className="text-muted-foreground">{project.name}</p>
+      <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="mb-2 text-2xl font-bold sm:text-3xl">Comprar Tokens</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">{project.name}</p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Buy Form */}
+        {/* Buy Form */}
+        <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
           <div className="lg:col-span-2">
-            <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
+            <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8">
               <BuyForm project={project} />
             </div>
           </div>
 
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-20">
+            <div className="lg:sticky lg:top-20">
               <SummaryBox project={project} />
             </div>
           </div>

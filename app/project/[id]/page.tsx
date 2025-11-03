@@ -48,22 +48,23 @@ export default function ProjectPage({ params }: ProjectPageProps) {
     <div className="min-h-screen">
       {/* Back Button */}
       <div className="border-b border-border">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
           <Button variant="ghost" size="sm" asChild>
             <Link href="/marketplace">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver al Marketplace
+              <span className="hidden sm:inline">Volver al Marketplace</span>
+              <span className="sm:hidden">Volver</span>
             </Link>
           </Button>
         </div>
       </div>
 
       {/* Hero Banner */}
-      <div className="relative h-[400px] overflow-hidden border-b border-border">
+      <div className="relative h-[300px] overflow-hidden border-b border-border sm:h-[350px] md:h-[400px]">
         <Image src={project.image || "/placeholder.svg"} alt={project.name} fill className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0">
-          <div className="container mx-auto px-4 pb-8">
+          <div className="container mx-auto px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8">
             <div className="mb-3 flex flex-wrap gap-2">
               <Badge>{project.category}</Badge>
               {isFeatured && (
@@ -74,7 +75,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
               )}
               {isFeatured && project.featuredTag && <Badge variant="secondary">{project.featuredTag}</Badge>}
             </div>
-            <h1 className="mb-2 text-balance text-4xl font-bold md:text-5xl">{project.name}</h1>
+            <h1 className="mb-2 text-balance text-3xl font-bold sm:mb-4 sm:text-4xl md:text-5xl">{project.name}</h1>
             <div className="flex items-center gap-2 text-muted-foreground">
               <MapPin className="h-5 w-5" />
               <span className="text-lg">{project.location}</span>
@@ -125,19 +126,21 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         </div>
       )}
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid gap-8 lg:grid-cols-3">
+      <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
           {/* Main Content */}
-          <div className="space-y-8 lg:col-span-2">
+          <div className="space-y-6 lg:col-span-2 lg:space-y-8">
             {/* Description */}
             <section>
-              <h2 className="mb-4 text-2xl font-bold">Descripción del Proyecto</h2>
-              <p className="text-pretty leading-relaxed text-muted-foreground">{project.description}</p>
+              <h2 className="mb-3 text-xl font-bold sm:mb-4 sm:text-2xl">Descripción del Proyecto</h2>
+              <p className="text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {project.description}
+              </p>
             </section>
 
             {/* Key Facts */}
             <section>
-              <h2 className="mb-4 text-2xl font-bold">Datos Clave</h2>
+              <h2 className="mb-4 text-2xl font-bold sm:mb-5 sm:text-3xl">Datos Clave</h2>
               <ProjectFacts
                 pricePerToken={project.pricePerTokenUSDT}
                 totalSupply={project.totalSupply}
@@ -150,12 +153,12 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
             {/* Documents */}
             <section>
-              <h2 className="mb-4 text-2xl font-bold">Documentación</h2>
+              <h2 className="mb-4 text-2xl font-bold sm:mb-5 sm:text-3xl">Documentación</h2>
               <div className="space-y-3">
                 {project.documents.map((doc) => (
                   <div
                     key={doc.id}
-                    className="flex items-center justify-between rounded-xl border border-border bg-card p-4"
+                    className="flex items-center justify-between rounded-xl border border-border bg-card p-4 sm:p-5"
                   >
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
@@ -177,13 +180,15 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             </section>
 
             {/* Risk Notice */}
-            <section className="rounded-2xl border border-warning/50 bg-warning/5 p-6">
+            <section className="rounded-2xl border border-warning/50 bg-warning/5 p-6 sm:p-7">
               <div className="mb-3 flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-warning" />
-                <h3 className="text-lg font-semibold">Riesgos y Avisos Legales</h3>
+                <h3 className="text-lg font-semibold sm:text-xl md:text-2xl">Riesgos y Avisos Legales</h3>
               </div>
-              <p className="text-pretty leading-relaxed text-muted-foreground">{project.riskNotes}</p>
-              <p className="mt-3 text-sm text-muted-foreground">
+              <p className="text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base md:text-lg">
+                {project.riskNotes}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground sm:text-base md:text-lg">
                 Esta inversión conlleva riesgos. El valor de los tokens puede fluctuar. Lee toda la documentación antes
                 de invertir. No inviertas más de lo que puedas permitirte perder.
               </p>
@@ -192,8 +197,8 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
           {/* Sidebar - Purchase CTA */}
           <div className="lg:col-span-1">
-            <div className="sticky top-20 space-y-4">
-              <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="lg:sticky lg:top-20 space-y-4">
+              <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
                 <div className="mb-6">
                   <p className="mb-1 text-sm text-muted-foreground">Precio por Token</p>
                   <p className="text-3xl font-bold">${project.pricePerTokenUSDT} USDT</p>
@@ -224,7 +229,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                   </Button>
                 )}
 
-                <p className="mt-4 text-center text-xs text-muted-foreground">
+                <p className="mt-4 text-center text-xs text-muted-foreground sm:text-sm md:text-base">
                   Necesitas verificación KYC para comprar tokens
                 </p>
               </div>

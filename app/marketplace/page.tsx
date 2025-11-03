@@ -69,14 +69,14 @@ export default function MarketplacePage() {
   return (
     <div className="min-h-screen">
       <div className="border-b border-border bg-card">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="mb-2 text-4xl font-bold">Marketplace</h1>
-          <p className="text-muted-foreground">Explora proyectos tokenizados de alta calidad</p>
+        <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+          <h1 className="mb-2 text-3xl font-bold sm:text-4xl">Marketplace</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">Explora proyectos tokenizados de alta calidad</p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:gap-4 md:flex-row md:items-center md:justify-between">
           <div className="relative flex-1 md:max-w-md">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -86,15 +86,15 @@ export default function MarketplacePage() {
               className="pl-10"
             />
           </div>
-          <Button variant="outline" onClick={() => setShowFilters(!showFilters)} className="md:hidden">
+          <Button variant="outline" onClick={() => setShowFilters(!showFilters)} className="md:hidden w-full sm:w-auto">
             <SlidersHorizontal className="mr-2 h-4 w-4" />
             Filtros
           </Button>
         </div>
 
-        <div className="flex flex-col gap-8 lg:flex-row">
+        <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
           {/* Filters Sidebar */}
-          <aside className={`w-full space-y-6 lg:w-64 lg:block ${showFilters ? "block" : "hidden lg:block"}`}>
+          <aside className={`w-full space-y-4 lg:w-64 lg:block ${showFilters ? "block" : "hidden lg:block"}`}>
             <div className="rounded-2xl border border-border bg-card p-5">
               <div className="flex items-center justify-between">
                 <Label htmlFor="featured-toggle" className="cursor-pointer font-semibold">
@@ -171,12 +171,12 @@ export default function MarketplacePage() {
           <div className="flex-1">
             <div className="mb-4 flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                {filteredProjects.length} {filteredProjects.length === 1 ? "proyecto" : "proyectos"}{" "}
-                {filteredProjects.length !== projects.filter((p) => p.status === "approved").length && "encontrados"}
+                {filteredProjects.length} {filteredProjects.length === 1 ? "proyecto" : "proyectos"}
+                {filteredProjects.length !== projects.filter((p) => p.status === "approved").length && " encontrados"}
               </p>
             </div>
             {filteredProjects.length > 0 ? (
-              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 {filteredProjects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
