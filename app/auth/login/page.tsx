@@ -8,7 +8,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const returnUrl = searchParams.get("returnUrl") || window.location.origin + "/auth/callback"
-    const keydPlatformUrl = process.env.NEXT_PUBLIC_KEYD_PLATFORM_URL || "https://v0-identity-verification-flow-0t.vercel.app"
+    const keydPlatformUrl = process.env.NEXT_PUBLIC_KEYD_PLATFORM_URL || "https://localhost:3001"
     const redirectUrl = `${keydPlatformUrl}?returnUrl=${encodeURIComponent(returnUrl)}`
     
     window.location.href = redirectUrl
