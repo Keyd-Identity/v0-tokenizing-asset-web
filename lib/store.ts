@@ -33,6 +33,7 @@ interface AppState {
   featuredTelemetry: FeaturedTelemetry[]
   setUserRole: (role: "admin" | "investor" | "promoter" | null) => void
   login: (role: "admin" | "investor" | "promoter") => void
+  loginWithKeydData: (role: "admin" | "investor" | "promoter", keydData?: { email?: string; wallet?: string; name?: string }) => void
   logout: () => void
   connectWallet: (address: string) => void
   disconnectWallet: () => void
@@ -76,6 +77,16 @@ export const useStore = create<AppState>((set) => ({
         ...state.user,
         role,
         id: role === "admin" ? "admin-1" : role === "investor" ? "investor-1" : "promoter-1",
+      },
+    })),
+
+  loginWithKeydData: (role: "admin" | "investor" | "promoter", keydData?: { email?: string; wallet?: string; name?: string }) =>
+    set((state) => ({
+      user: {
+        ...state.user,
+        role,
+        id: role === "admin" ? "admin-1" : role === "investor" ? "investor-1" : "promoter-1",
+        walletAddress: keydData?.wallet || state.user.walletAddress,
       },
     })),
 

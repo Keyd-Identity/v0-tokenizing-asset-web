@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { useStore } from "@/lib/store"
 
-export default function CallbackPage() {
+function CallbackContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const { loginWithKeydData } = useStore()
@@ -88,5 +88,19 @@ export default function CallbackPage() {
         <p className="text-muted-foreground">Redirigiendo a tu panel...</p>
       </div>
     </div>
+  )
+}
+
+export default function CallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+        <div className="text-center">
+          <h1 className="mb-2 text-4xl font-bold">Cargando...</h1>
+        </div>
+      </div>
+    }>
+      <CallbackContent />
+    </Suspense>
   )
 }

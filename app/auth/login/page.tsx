@@ -1,14 +1,14 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 
-export default function LoginPage() {
+function LoginContent() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
     const returnUrl = searchParams.get("returnUrl") || window.location.origin + "/auth/callback"
-    const keydPlatformUrl = process.env.NEXT_PUBLIC_KEYD_PLATFORM_URL || "https://localhost:3001"
+    const keydPlatformUrl = process.env.NEXT_PUBLIC_KEYD_PLATFORM_URL || "https://v0-kyc-platform.vercel.app/auth/login"
     const redirectUrl = `${keydPlatformUrl}?returnUrl=${encodeURIComponent(returnUrl)}`
     
     window.location.href = redirectUrl
@@ -17,9 +17,23 @@ export default function LoginPage() {
   return (
     <div className="container mx-auto flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
       <div className="text-center">
-        <h1 className="mb-2 text-4xl font-bold">Redirigiendo a Keyd Platform...</h1>
+        <h1 className="mb-2 text-4xl font-bold">Redirigiendo a la plataforma de identidad...</h1>
         <p className="text-muted-foreground">Por favor, espera mientras te redirigimos al inicio de sesión</p>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+        <div className="text-center">
+          <h1 className="mb-2 text-4xl font-bold">Cargando...</h1>
+        </div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }
