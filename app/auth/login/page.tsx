@@ -8,10 +8,10 @@ function LoginContent() {
 
   useEffect(() => {
     const returnUrl = searchParams.get("returnUrl") || window.location.origin + "/auth/callback"
-    const keydPlatformUrl = process.env.NEXT_PUBLIC_KEYD_PLATFORM_URL || "https://kyc-platform-production-1aa2.up.railway.app/auth/login?redirect=%2F/auth/login"
-    const redirectUrl = `${keydPlatformUrl}?returnUrl=${encodeURIComponent(returnUrl)}`
-    
-    window.location.href = redirectUrl
+    const baseUrl = process.env.NEXT_PUBLIC_KEYD_PLATFORM_URL || "https://kyc-platform-production-1aa2.up.railway.app/auth/login"
+    const url = new URL(baseUrl)
+    url.searchParams.set("returnUrl", returnUrl)
+    window.location.href = url.toString()
   }, [searchParams])
 
   return (
